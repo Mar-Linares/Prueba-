@@ -1,0 +1,37 @@
+---
+title: "Script 4"
+author: "Mariandreé Linares"
+date: "7/3/2021"
+output:
+  word_document: default
+  html_document: default
+---
+```{r}
+
+library(readxl)
+Boletas <- read_excel("Rodenticida - Boletas.xlsx")
+View(Boletas)
+
+
+variable.names(Boletas)
+head(Boletas)
+str(Boletas)
+class(Boletas)
+nrow(Boletas)
+
+
+hist(Boletas$`CANTIDAD (qq)`)
+qqnorm(Boletas$`CANTIDAD (qq)`)
+qqline(Boletas$`CANTIDAD (qq)`,col=2)
+boxplot(Boletas$`CANTIDAD (qq)` ~ Boletas$FINCA, main="Roedores capturados", col= "lightgreen", ylab="Cantidad (qq)", xlab="Finca", pch=18)
+shapiro.test(Boletas$`CANTIDAD (qq)`)
+
+
+
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
