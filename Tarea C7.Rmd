@@ -1,0 +1,32 @@
+---
+title: "Tarea - C7"
+author: "Mariandreé Linares"
+date: "9/3/2021"
+output:
+  word_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+setwd("~/2020/RStudio/Rstudio - Pantaleon")
+library(readxl)
+Pantaleon <- read_excel("PantaleonData.xlsx")
+View(Pantaleon)
+
+
+install.packages("ggplot2")
+library(ggplot2)
+ggplot(Pantaleon, aes(x=Estación_Actualizada, y=rendimiento)) + geom_bar(stat="identity")
+
+ ggplot(Pantaleon, aes(x=Finca, y=rendimiento, size=Área, colour=Status)) + geom_point(alpha=.5) +
+scale_size_area() +
+scale_colour_brewer(palette="Set1")
+
+```
+```{r}
+
+```
+
