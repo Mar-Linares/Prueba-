@@ -1,0 +1,88 @@
+---
+title: "TAH"
+author: "Mariandreé Linares"
+date: "17/3/2021"
+output: html_document
+---
+```{r}
+setwd("~/2020/RStudio/Rstudio - Pantaleon")
+library(readxl)
+AOV <- read_excel("PantaleonDatos2.xls")
+head(AOV)
+
+#ANOVA TAH
+TAH_dat <- aov(AOV$TAH ~ AOV$Entrenamiento)
+summary(TAH_dat)
+#F_value: 15.8, P_value: sig. 
+
+Entrenamiento <- AOV$Entrenamiento
+tapply(AOV$TAH, Entrenamiento, mean)
+tapply(AOV$TAH, Entrenamiento, sd)
+pairwise.t.test(AOV$TAH, Entrenamiento, p.adj = "bonf")
+
+
+#Supuestos
+library(ggstatsplot)
+ggbetweenstats(
+  data = AOV,
+  x = Entrenamiento,
+  y = TAH,
+  title = "TAH según Entrenamiento Requerido",
+    palette = "Dark2"
+   )
+
+show(AOV)
+
+
+#Normalidad
+hist(TAH_dat$residuals, col="lightcoral", ylab="Frecuencia", xlab="TAH", main="Histograma TAH")
+qqnorm(TAH_dat$residuals, pch=5, col="lightblue4")
+#Histograma en forma de campana, qqnorm forma una recta. Los datos parecen normales. 
+
+
+par(mfrow=c(2,2))
+plot(TAH_dat)
+par(mfrow=c(1,1))
+#Línea debe ser horizontal. Si no, hay valores que generan sesgo. 
+
+
+install.packages("lmtest")
+library(lmtest)
+bptest(TAH_dat)
+install.packages("car")
+library(car)
+ncvTest(lm(AOV$TAH ~ AOV$Entrenamiento))
+#homoscedastidad se cumple con p>0.05. 
+
+#Con esto el modelo de ANOVA se acepta. 
+
+library(WRS2)
+t1way(AOV$TAH ~ AOV$Entrenamiento)
+
+
+
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
